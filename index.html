@@ -31,19 +31,31 @@ body { margin: 0; padding: 0; }
                         'tiles': [
                         'https://tiles.lulc-staging.ds.io/mosaic/naip.latest/tiles/{z}/{x}/{y}.png?bidx=1%2C2%2C3'
                         ],
-                        'tileSize': 256,
-                        'attribution':
-                        'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
+                        'tileSize': 256
+                    },
+                    'locator': {
+                        'type': 'raster',
+                        'tiles': [
+                            'https://api.mapbox.com/styles/v1/openstreetmap/ckasmteyi1tda1ipfis6wqhuq/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2VvaGFja2VyIiwiYSI6ImFIN0hENW8ifQ.GGpH9gLyEg0PZf3NPQ7Vrg'
+                        ],
+                        'tileSize': 256
                     }
                 },
                 'layers': [
-                {
-                    'id': 'simple-tiles',
-                    'type': 'raster',
-                    'source': 'raster-tiles',
-                    'minzoom': 14,
-                    'maxzoom': 22
-                }
+                    {
+                        'id': 'simple-tiles',
+                        'type': 'raster',
+                        'source': 'raster-tiles',
+                        'minzoom': 14,
+                        'maxzoom': 22
+                    },
+                    {
+                        'id': 'locator-tiles',
+                        'type': 'raster',
+                        'source': 'locator',
+                        'minzoom': 2,
+                        'maxzoom': 22
+                    }
                 ]
             },
             center: [-77.0142, 38.8892], // starting position
