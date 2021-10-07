@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OSM vs NAIP</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZ2VvaGFja2VyIiwiYSI6ImFIN0hENW8ifQ.GGpH9gLyEg0PZf3NPQ7Vrg';
+    // const map = new mapboxgl.Map({
+    //     container: 'map',
+    //     style: 'mapbox://styles/mapbox/light-v10',
+    //     zoom: 12,
+    //     center: [-87.622088, 41.878781]
+    // });
+    const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: {
+                'version': 8,
+                'sources': {
+                    'raster-tiles': {
+                        'type': 'raster',
+                        'tiles': [
+                        'https://tiles.lulc-staging.ds.io/mosaic/naip.latest/tiles/{z}/{x}/{y}.png?bidx=1%2C2%2C3'
+                        ],
+                        'tileSize': 256,
+                        'attribution':
+                        'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
+                    }
+                },
+                'layers': [
+                {
+                    'id': 'simple-tiles',
+                    'type': 'raster',
+                    'source': 'raster-tiles',
+                    'minzoom': 14,
+                    'maxzoom': 22
+                }
+                ]
+            },
+            center: [-77.0142, 38.8892], // starting position
+            zoom: 14 // starting zoom
+        });
+
+    map.on('load', () => {
+        // Add a new vector tile source with ID 'mapillary'.
+        map.addSource('osm', {
+            'type': 'vector',
+            'tiles': [
+                'https://qa-tiles-server-dev.ds.io/services/z17/tiles/{z}/{x}/{y}.pbf'
+            ],
+            'minzoom': 14,
+            'maxzoom': 17
+        });
+        map.addLayer(
+            {
+                'id': 'osm', // Layer ID
+                'type': 'line',
+                'source': 'osm', // ID of the tile source created above
+                // Source has several layers. We visualize the one with name 'sequence'.
+                'source-layer': 'osm',
+                'layout': {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                'paint': {
+                    'line-opacity': 0.6,
+                    'line-color': 'red',
+                    'line-width': 2
+                }
+            }
+        );
+    });
+
+    map.addControl(new mapboxgl.NavigationControl());
+</script>
+
+</body>
+</html>
